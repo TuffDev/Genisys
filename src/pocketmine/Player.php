@@ -2673,8 +2673,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 
 				switch($packet->action){
 					case PlayerActionPacket::ACTION_START_BREAK:
-						//Fixes fire breaking in creative.
-						if(/*$this->lastBreak !== PHP_INT_MAX or */$pos->distanceSquared($this) > 10000){
+						if($this->lastBreak !== PHP_INT_MAX or $pos->distanceSquared($this) > 10000){
 							break;
 						}
 						$target = $this->level->getBlock($pos);
@@ -2684,6 +2683,7 @@ class Player extends Human implements CommandSender, InventoryHolder, ChunkLoade
 							$side = $target->getSide($packet->face);
 							if($side instanceof Fire){
 								$side->getLevel()->setBlock($side, new Air());
+								break;
 							}
 							$this->lastBreak = microtime(true);
 						}else{
